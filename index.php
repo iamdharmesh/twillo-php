@@ -16,9 +16,16 @@ $client = new Client($sid, $token);
 
 $numbers = explode(',' , $_POST['to'].',');
 $body = $_POST['body'];
+$count = 0;
 foreach($numbers as $k=>$v)
 {
+	
+	if($count >= 10){
+		$count = 0
+		usleep(330000);
+	}
 	if(!$v || $v=="")break;
+	$v = trim($v);
 	$client->messages->create(
 	    // the number you'd like to send the message to
 	    $v,
@@ -29,6 +36,9 @@ foreach($numbers as $k=>$v)
 	        'body' => $body
 	    )
 	);
+	$count++;
+	
+
 }
 
 
@@ -39,4 +49,5 @@ foreach($numbers as $k=>$v)
 <form action="" method="_POST">
 To : <input type="text" name="to" placeholder="use ',' to add multiple" /> <font size="1">Use country code</font><br>
 Message<textarea name="body"></textarea>
+<input type="submit" value="send">
 </form>
